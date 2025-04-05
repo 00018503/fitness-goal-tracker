@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  h2 Goal Details
+  p
+    strong Type:
+    = goal.type
+  p
+    strong Target:
+    = goal.target
+  p
+    strong Progress:
+    = goal.progress
+  p
+    strong Deadline:
+    = goal.deadline.toDateString()
+  p
+    strong Status:
+    = goal.status
+  a.btn.btn-warning(href=`/goals/${goal._id}/edit`) Edit
+  form.d-inline(action=`/goals/${goal._id}?_method=DELETE` method='POST')
+    button.btn.btn-danger(type='submit') Delete
+  a.btn.btn-secondary(href='/goals') Back to Goals

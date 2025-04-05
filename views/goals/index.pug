@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  h2 Goals
+  a.btn.btn-primary(href='/goals/new') New Goal
+  if goals.length
+    table.table
+      thead
+        tr
+          th Type
+          th Target
+          th Progress
+          th Deadline
+          th Status
+          th Actions
+      tbody
+        each goal in goals
+          tr
+            td= goal.type
+            td= goal.target
+            td= goal.progress
+            td= goal.deadline.toDateString()
+            td= goal.status
+            td
+              a.btn.btn-sm.btn-info(href=`/goals/${goal._id}`) View
+              a.btn.btn-sm.btn-warning(href=`/goals/${goal._id}/edit`) Edit
+              form.d-inline(action=`/goals/${goal._id}?_method=DELETE` method='POST')
+                button.btn.btn-sm.btn-danger(type='submit') Delete
+  else
+    p No goals found.

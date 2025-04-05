@@ -1,0 +1,102 @@
+extends ../layout
+
+block content
+  h2 Edit Goal
+  if errors
+    ul
+      each error in errors
+        li= error.msg
+  form(action=`/goals/${goal._id}?_method=PUT` method='POST')
+    .form-group
+      label Type
+      select.form-control(name='type' id='goalType')
+        option(value='Weight Loss' selected=goal.type === 'Weight Loss') Weight Loss
+        option(value='Muscle Gain' selected=goal.type === 'Muscle Gain') Muscle Gain
+        option(value='Running Distance' selected=goal.type === 'Running Distance') Running Distance
+        option(value='Push-Ups' selected=goal.type === 'Push-Ups') Push-Ups
+        option(value='Yoga Sessions' selected=goal.type === 'Yoga Sessions') Yoga Sessions
+        option(value='Cycling Distance' selected=goal.type === 'Cycling Distance') Cycling Distance
+        option(value='Plank Time' selected=goal.type === 'Plank Time') Plank Time
+        option(value='Steps' selected=goal.type === 'Steps') Steps
+        option(value='Pull-Ups' selected=goal.type === 'Pull-Ups') Pull-Ups
+        option(value='Swimming Laps' selected=goal.type === 'Swimming Laps') Swimming Laps
+    .form-group
+      label Target
+      input.form-control(type='number' name='target' id='target' value=goal.target placeholder='Enter target (kg)')
+    .form-group
+      label Progress
+      input.form-control(type='number' name='progress' id='progress' value=goal.progress placeholder='Enter progress (kg)')
+    .form-group
+      label Deadline
+      input.form-control(type='date' name='deadline' value=goal.deadline.toISOString().split('T')[0])
+    .form-group
+      label Status
+      select.form-control(name='status')
+        option(value='in progress' selected=goal.status === 'in progress') In Progress
+        option(value='completed' selected=goal.status === 'completed') Completed
+    button.btn.btn-primary(type='submit') Update
+
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const type = document.getElementById('goalType').value;
+      const targetInput = document.getElementById('target');
+      const progressInput = document.getElementById('progress');
+
+      updatePlaceholders(type, targetInput, progressInput);
+    });
+
+    document.getElementById('goalType').addEventListener('change', function() {
+      const type = this.value;
+      const targetInput = document.getElementById('target');
+      const progressInput = document.getElementById('progress');
+
+      updatePlaceholders(type, targetInput, progressInput);
+    });
+
+    function updatePlaceholders(type, targetInput, progressInput) {
+      switch (type) {
+        case 'Weight Loss':
+          targetInput.placeholder = 'Enter target (kg)';
+          progressInput.placeholder = 'Enter progress (kg)';
+          break;
+        case 'Muscle Gain':
+          targetInput.placeholder = 'Enter target (kg)';
+          progressInput.placeholder = 'Enter progress (kg)';
+          break;
+        case 'Running Distance':
+          targetInput.placeholder = 'Enter target (km)';
+          progressInput.placeholder = 'Enter progress (km)';
+          break;
+        case 'Push-Ups':
+          targetInput.placeholder = 'Enter target (number of push-ups)';
+          progressInput.placeholder = 'Enter progress (number of push-ups)';
+          break;
+        case 'Yoga Sessions':
+          targetInput.placeholder = 'Enter target (sessions)';
+          progressInput.placeholder = 'Enter progress (sessions)';
+          break;
+        case 'Cycling Distance':
+          targetInput.placeholder = 'Enter target (km)';
+          progressInput.placeholder = 'Enter progress (km)';
+          break;
+        case 'Plank Time':
+          targetInput.placeholder = 'Enter target (seconds)';
+          progressInput.placeholder = 'Enter progress (seconds)';
+          break;
+        case 'Steps':
+          targetInput.placeholder = 'Enter target (daily or total)';
+          progressInput.placeholder = 'Enter progress (daily or total)';
+          break沿着;
+        case 'Pull-Ups':
+          targetInput.placeholder = 'Enter target (number of pull-ups)';
+          progressInput.placeholder = 'Enter progress (number of pull-ups)';
+          break;
+        case 'Swimming Laps':
+          targetInput.placeholder = 'Enter target (meters)';
+          progressInput.placeholder = 'Enter progress (meters)';
+          break;
+        default:
+          targetInput.placeholder = 'Enter target';
+          progressInput.placeholder = 'Enter progress';
+      }
+    }
