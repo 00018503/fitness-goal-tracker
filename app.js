@@ -8,14 +8,23 @@ const goalsRouter = require("./routes/goals");
 
 const app = express();
 
-// // mongodb connection
-// mongoose.connect(
-//   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/fitness-goals",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }
-// );
+// mongodb atlas connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(
+      process.env.MONGODB_URI ||
+        "mongodb+srv://shoafzal:shoafzal17@cluster0.0uvyh.mongodb.net/fitness-goals?retryWrites=true&w=majority&appName=Cluster0",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
+    console.log("MongoDB connected successfully");
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  }
+};
 
 // middleware
 app.use(express.urlencoded({ extended: false }));
@@ -23,14 +32,15 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 
-// routes
+// route
 app.use("/goals", goalsRouter);
 
-// to redirect homepage to the goals route
+// redirects to goals route
 app.get("/", (req, res) => {
   res.redirect("/goals");
 });
 
+// server start
 const PORT = process.env.PORT || 3000;
 connectDB().then(() => {
   app.listen(PORT, () => {
